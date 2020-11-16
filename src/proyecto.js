@@ -74,7 +74,14 @@ db.Seguros.insertMany([
  */
 // Encuentra todos los documentos los cuales estén activos, la ciudad del cliente no sea ni de Barcelona ni de Madrid, los costes sean mayores a la Tarifa anual y
 // y que el Cliente sea premium o el Dinero Debido no sea igual a 0 o que la fecha de inicio del contrato sea igual o postearior al 1 de Enero de 2000.
-db.Seguros.find({$and: [{Activo:true}, {"Cliente.Ciudad": {$nin: ["Barcelona","Madrid"]}},{$expr: {$gt: ["$Precio.Costes","$Precio.TarifaAnual"]} }, {$or: [{"Cliente.Premium":true}, {"Precio.DineroDebido": {$not: {$eq:0}}}]},{"Info.FechaInicio": {$gte: new Date("2000-01-01")}} ] })
+db.Seguros.find(
+    {$and: [
+        {Activo:true}, 
+        {"Cliente.Ciudad": {$nin: ["Barcelona","Madrid"]}},
+        {$expr: {$gt: ["$Precio.Costes","$Precio.TarifaAnual"]} }, 
+            {$or: [{"Cliente.Premium":true}, 
+                {"Precio.DineroDebido": {$not: {$eq:0}}}]},
+        {"Info.FechaInicio": {$gte: new Date("2000-01-01")}} ] })
 
 // Encuentra todos los documentos cuyos tipos cumplan que el valor 1 no sea 1, el valor 3 no sea 0 y el valor 5 no sea 0, es decir, todos los clientes que no tengan
 // seguro de Hogar pero si tengan seguro de Pension y Viaje.
